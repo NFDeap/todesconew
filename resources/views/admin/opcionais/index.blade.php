@@ -36,7 +36,7 @@
                 @foreach($registros as $registro)
                     <tr>
                         <td>{{ $registro->id }}</td>
-                        <td>{{ $registro->titulo }}</td>                        
+                        <td>{{ $registro->tituloOpcional }}</td>                        
                         <td>                                                   
                             <a class="btn btn1" href="{{ route('admin.opcionais.editar',$registro->id) }}">Editar <i class="material-icons right">edit</i></a>                                                
                             <a class="btn btn1" href="javascript: if(confirm('Deletar esse Registro?')){window.location.href = '{{ route('admin.opcionais.deletar',$registro->id) }}'}">Deletar <i class="material-icons right">remove</i></a>

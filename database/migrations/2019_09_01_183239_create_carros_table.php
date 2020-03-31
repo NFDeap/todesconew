@@ -23,8 +23,8 @@ class CreateCarrosTable extends Migration
             $table->integer('modelo_id')->unsigned();
             $table->foreign('modelo_id')->references('id')->on('modelos');
             
-            $table->integer('opcional_id')->unsigned();
-            $table->foreign('opcional_id')->references('id')->on('opcionals');
+            /* $table->string('opcional_id')->unsigned();
+            $table->foreign('opcional_id')->references('id')->on('opcionals'); */
             
 
             $table->string('titulo');
@@ -41,7 +41,7 @@ class CreateCarrosTable extends Migration
             $table->string('direcao');  
             $table->string('potenciaMotor');  
             $table->text('descricao');
-            $table->text('opcionais');
+            $table->string('opcionais');
             $table->bigInteger('visualizacoes')->default(0);
             $table->enum('publicar',['sim','nao'])->default('nao');
             $table->string('imagem')->nullable();

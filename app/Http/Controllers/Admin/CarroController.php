@@ -8,6 +8,7 @@ use App\Marca;
 use App\Modelo;
 use App\Carro;
 use App\Contato;
+use App\Opcional;
 
 class CarroController extends Controller
 {
@@ -23,8 +24,9 @@ class CarroController extends Controller
     public function adicionar(){
         $marcas = Marca::all();
         $modelos = Modelo::all();
+        $opcionais = Opcional::all();
 
-        return view('admin.carros.adicionar',compact('marcas','modelos'));        
+        return view('admin.carros.adicionar',compact('marcas','modelos', 'opcionais'));
     }
 
     public function editar($id){
@@ -32,8 +34,9 @@ class CarroController extends Controller
 
         $marcas = Marca::all();
         $modelos = Modelo::all();
+        $opcionais = Opcional::all();
 
-        return view('admin.carros.editar',compact('registro','marcas','modelos'));                
+        return view('admin.carros.editar',compact('registro','marcas','modelos', 'opcionais'));
     }
 
     public function salvar(Request $request){
@@ -59,7 +62,7 @@ class CarroController extends Controller
         $registro->opcionais = $registros['opcionais'];
         $registro->visualizacoes = 0;
         $registro->publicar = $registros['publicar'];
-
+        
         $registro->marca_id = $registros['marca_id'];
         $registro->modelo_id = $registros['modelo_id'];
         
@@ -77,7 +80,7 @@ class CarroController extends Controller
             \Session::flash('mensagem',['msg'=>'Campo Numérico contendo caracteres!','class'=>'red white-text']);
             return redirect()->route('admin.carros');    
         }
-        else{
+        else{         
             $registro->save(); /* Metodo que salva no banco. */
             \Session::flash('mensagem',['msg'=>'Registro Criado com Sucesso!','class'=>'green white-text']);
             return redirect()->route('admin.carros');

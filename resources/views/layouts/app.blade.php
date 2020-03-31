@@ -64,7 +64,7 @@
         <br>
         <br>
 
-        @if(Session::has('mensagem'))
+        <?php if(Auth::user(['email'=>['email'],'password'=>['password']])) :?>
         <footer class="page-footer">
             <div class="container center-align">
                 <div class="row">
@@ -103,9 +103,8 @@
                 </div>
             </div>
         </footer>
-        @else
-
-        @endif
+        <?php else :?>
+        <?php endif;?>        
 
     </div>
 

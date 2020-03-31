@@ -1,4 +1,7 @@
-
+<?php  
+/* var_dump($opcionais);
+exit; */
+?>
 
 <div class="input-field">
     <input type="text" name="titulo" class="validade" maxlength="60" required value="{{ (isset($registro->titulo) ? $registro->titulo : '') }}">
@@ -90,9 +93,22 @@
     <label>Descrição: </label>
 </div>
 
-<div class="input-field">    
+<!-- <div class="input-field">    
     <textarea rows="4" cols="50" name="opcionais" id="textarea2" class="materialize-textarea" required maxlength="600">{{ (isset($registro->opcionais) ? $registro->opcionais : '') }}</textarea>
     <label>Opcionais: </label>
+</div> -->
+
+<div class="row">    
+    @foreach($opcionais as $opcional)
+        <div class="col-3">
+            <p>
+                <label>
+                    <input name="opcionais[]" id="opcionais{{$opcional->id}}" type="checkbox" class="filled-in" value="{{ $opcional->id }}" checked="{{ (isset($registro->opcional_id) && $registro->opcional_id == $opcional->id ? 'checked' : '') }}" />
+                    <span>{{ $opcional->tituloOpcional }}</span>
+                </label>
+            </p>
+        </div>
+    @endforeach
 </div>
 
 <div class="row">
