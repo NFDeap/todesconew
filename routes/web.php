@@ -195,4 +195,19 @@ Route::group(['middleware'=>'auth'], function(){
     Route::get('/admin/papel/permissao/remover/{id}/{id_permissao}',['as'=>'admin.papel.permissao.remover', 'uses'=>'Admin\PapelController@removerPermissao']);
 
 
+
+    Route::get('/admin/opcionais',['as'=>'admin.opcionais', 'uses'=>'Admin\OpcionalController@index']);
+
+    Route::get('/admin/opcionais/adicionar',['as'=>'admin.opcionais.adicionar', 'uses'=>'Admin\OpcionalController@adicionar']);
+
+    Route::post('/admin/opcionais/salvar',['as'=>'admin.opcionais.salvar', 'uses'=>'Admin\OpcionalController@salvar']);
+
+    Route::get('/admin/opcionais/editar/{id}',['as'=>'admin.opcionais.editar', 'uses'=>'Admin\OpcionalController@editar']);
+
+    Route::put('/admin/opcionais/atualizar/{id}',['as'=>'admin.opcionais.atualizar', 'uses'=>'Admin\OpcionalController@atualizar']);
+
+    Route::get('/admin/opcionais/deletar/{id}',['as'=>'admin.opcionais.deletar', 'uses'=>'Admin\OpcionalController@deletar']);
+
+
+
 });

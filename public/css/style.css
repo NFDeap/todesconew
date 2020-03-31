@@ -281,6 +281,9 @@ ul.pagination li.disabled {
   /* background-color: #D7B673;   */
   border-top: 5px solid #244610;
   background-color: #b53033;
+/*   position: fixed;
+  width: -webkit-fill-available;
+  bottom: 0; */
 }
 
 .dark-text{

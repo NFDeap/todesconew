@@ -16,6 +16,10 @@ class Carro extends Model
         return $this->belongsTo('App\Modelo','modelo_id');
     }
 
+    public function opcional(){
+        return $this->belongsTo('App\Opcional','opcional_id');
+    }
+
     public function galeria(){
         return $this->hasMany('App\Galeria','carro_id');
     }

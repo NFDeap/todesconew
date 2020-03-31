@@ -23,6 +23,9 @@ class CreateCarrosTable extends Migration
             $table->integer('modelo_id')->unsigned();
             $table->foreign('modelo_id')->references('id')->on('modelos');
             
+            $table->integer('opcional_id')->unsigned();
+            $table->foreign('opcional_id')->references('id')->on('opcionals');
+            
 
             $table->string('titulo');
             $table->decimal('preco',6,2);
