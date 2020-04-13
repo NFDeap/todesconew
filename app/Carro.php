@@ -23,8 +23,7 @@ class Carro extends Model
         'cambio', 
         'direcao', 
         'potenciaMotor', 
-        'descricao',
-        'opcionais',
+        'descricao',        
         'visualizacoes',
         'publicar',
         'imagem'        

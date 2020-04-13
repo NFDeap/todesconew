@@ -9,6 +9,9 @@ use App\Modelo;
 use App\Carro;
 use App\Contato;
 use App\Opcional;
+use App\OpcionaisCarros;
+
+use Illuminate\Support\Facades\DB;
 
 class CarroController extends Controller
 {
@@ -34,16 +37,15 @@ class CarroController extends Controller
 
         $marcas = Marca::all();
         $modelos = Modelo::all();
-        $opcionais = Opcional::all();
+        $opcionais = Opcional::all();               
+        $opcionais_carro = DB::table('opcionais_carros')->where('id_carro', $id)->get();              
 
-        return view('admin.carros.editar',compact('registro','marcas','modelos', 'opcionais'));
+        return view('admin.carros.editar',compact('registro','marcas','modelos', 'opcionais', 'opcionais_carro'));
     }
 
     public function salvar(Request $request){
         $registros = $request->all();
 
-        
-        
         $registro = new Carro();
         $registro->titulo = $registros['titulo'];
         $registro->preco = $registros['preco'];       
@@ -58,8 +60,8 @@ class CarroController extends Controller
         $registro->cambio = $registros['cambio'];
         $registro->direcao = $registros['direcao'];
         $registro->potenciaMotor = $registros['potenciaMotor'];        
-        $registro->descricao = $registros['descricao'];
-        $registro->opcionais = $registros['opcionais'];
+        $registro->descricao = $registros['descricao'];      
+
         $registro->visualizacoes = 0;
         $registro->publicar = $registros['publicar'];
         
@@ -76,12 +78,30 @@ class CarroController extends Controller
             $registro->imagem = $diretorio.'/'.$nomeArquivo;
         }
 
+        /* $opcionais = Input::get('opcionais[]','value'); */      
+    
+        /* $registro->opcionais = $registros['opcionais'];
+        if($registro->opcionais != null || $registro->opcionais != '') {
+            foreach($registro->opcionais as $value){
+                
+            }            
+        } */
+
         if(!is_numeric($registro->preco) || empty($registro->preco) || !is_numeric($registro->ano) || empty($registro->ano)){
             \Session::flash('mensagem',['msg'=>'Campo Numérico contendo caracteres!','class'=>'red white-text']);
             return redirect()->route('admin.carros');    
         }
         else{         
             $registro->save(); /* Metodo que salva no banco. */
+            
+        $opcionais = $_POST['opcionais'];       
+        
+        foreach($opcionais as $value){     
+            $reg = new OpcionaisCarros();              
+            $reg->id_opcional = $value;
+            $reg->id_carro = $registro->id;
+            $reg->save();
+        }        
             \Session::flash('mensagem',['msg'=>'Registro Criado com Sucesso!','class'=>'green white-text']);
             return redirect()->route('admin.carros');
         }   

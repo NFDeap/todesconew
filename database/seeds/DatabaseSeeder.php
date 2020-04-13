@@ -16,5 +16,8 @@ class DatabaseSeeder extends Seeder
         /* $this->call(PapelSeeds::class);
         $this->call(PermissaoSeeds::class); */
         $this->call(ContatosSeeds::class);
+        $this->call(MarcasSeeds::class);
+        $this->call(ModelosSeeds::class);
+        $this->call(OpcionaisSeeds::class);
     }
 }

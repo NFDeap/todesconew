@@ -40,8 +40,7 @@ class CreateCarrosTable extends Migration
             $table->string('cambio');  
             $table->string('direcao');  
             $table->string('potenciaMotor');  
-            $table->text('descricao');
-            $table->string('opcionais');
+            $table->text('descricao');            
             $table->bigInteger('visualizacoes')->default(0);
             $table->enum('publicar',['sim','nao'])->default('nao');
             $table->string('imagem')->nullable();

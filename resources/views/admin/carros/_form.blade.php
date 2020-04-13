@@ -1,6 +1,7 @@
 <?php  
-/* var_dump($opcionais);
+/* var_dump($opcionais_carro);
 exit; */
+
 ?>
 
 <div class="input-field">
@@ -98,12 +99,17 @@ exit; */
     <label>Opcionais: </label>
 </div> -->
 
+
 <div class="row">    
     @foreach($opcionais as $opcional)
+    
+<!-- foreach($opcionais_carro as $key => $value) {
+    var_dump($value->id_carro);
+} -->
         <div class="col-3">
             <p>
                 <label>
-                    <input name="opcionais[]" id="opcionais{{$opcional->id}}" type="checkbox" class="filled-in" value="{{ $opcional->id }}" checked="{{ (isset($registro->opcional_id) && $registro->opcional_id == $opcional->id ? 'checked' : '') }}" />
+                    <input name="opcionais[]" id="opcionais{{$opcional->id}}" type="checkbox" class="filled-in" value="{{ $opcional->id }}" checked="{{ (isset($opcionais_carro) && foreach($opcionais_carro as $key => $value){$value->id_carro == $registro->id ? 'checked' : ''} ) }}" />
                     <span>{{ $opcional->tituloOpcional }}</span>
                 </label>
             </p>
