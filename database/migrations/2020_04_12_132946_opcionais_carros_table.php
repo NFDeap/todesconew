@@ -15,8 +15,9 @@ class OpcionaisCarrosTable extends Migration
     {
         Schema::create('opcionais_carros', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('tituloOpcional');
             $table->integer('id_opcional');
-            $table->integer('id_carro');            
+            $table->integer('id_carro');          
             $table->foreign("id_opcional")
                 ->references('id')
                 ->on('opcionals'); 

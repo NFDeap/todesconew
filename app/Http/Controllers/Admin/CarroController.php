@@ -28,19 +28,28 @@ class CarroController extends Controller
         $marcas = Marca::all();
         $modelos = Modelo::all();
         $opcionais = Opcional::all();
+        $opcionais_carro  = null;
 
-        return view('admin.carros.adicionar',compact('marcas','modelos', 'opcionais'));
+        return view('admin.carros.adicionar',compact('marcas','modelos', 'opcionais', 'opcionais_carro'));
     }
 
     public function editar($id){
         $registro = Carro::find($id);
 
+       /*  var_dump($id);
+        exit; */
         $marcas = Marca::all();
         $modelos = Modelo::all();
         $opcionais = Opcional::all();               
-        $opcionais_carro = DB::table('opcionais_carros')->where('id_carro', $id)->get();              
+        $opcionais_carro_id = DB::table('opcionais_carros')
+        ->select(DB::raw('id_carro'))
+        ->where('id', $id)                     
+        ->get();  
+        var_dump($opcionais_carro_id);
+        exit;
+        /* $opcionais_carro_id = DB::table('opcionais_carros')->where('id_carro', $id)->get(); */
 
-        return view('admin.carros.editar',compact('registro','marcas','modelos', 'opcionais', 'opcionais_carro'));
+        return view('admin.carros.editar',compact('registro','marcas','modelos', 'opcionais', 'opcionais_carro_id'));
     }
 
     public function salvar(Request $request){
@@ -94,14 +103,28 @@ class CarroController extends Controller
         else{         
             $registro->save(); /* Metodo que salva no banco. */
             
-        $opcionais = $_POST['opcionais'];       
+        $opcionais_carros = $_POST['opcionais'];   
+     /*    foreach($opcionais_carros as $value) {
+                                                           
+        }
+        exit;         */
         
-        foreach($opcionais as $value){     
-            $reg = new OpcionaisCarros();              
-            $reg->id_opcional = $value;
-            $reg->id_carro = $registro->id;
-            $reg->save();
-        }        
+
+
+        foreach($opcionais_carros as $value){     
+            $reg = new OpcionaisCarros();     
+            $titles = DB::table('opcionals')
+                ->select(DB::raw('tituloOpcional'))
+                ->where('id', $value)                     
+                ->get();            
+                foreach($titles as $title){                                        
+                    $reg->tituloOpcional = $title->tituloOpcional;
+                    $reg->id_opcional = $value;
+                    $reg->id_carro = $registro->id;
+                    $reg->save();                    
+                }                   
+        }  
+
             \Session::flash('mensagem',['msg'=>'Registro Criado com Sucesso!','class'=>'green white-text']);
             return redirect()->route('admin.carros');
         }   
@@ -110,6 +133,7 @@ class CarroController extends Controller
 
     public function atualizar(Request $request, $id){
         $registro = Carro::find($id);
+
         $registros = $request->all();
 
         $registro->titulo = $registros['titulo'];
@@ -126,7 +150,7 @@ class CarroController extends Controller
         $registro->direcao = $registros['direcao'];
         $registro->potenciaMotor = $registros['potenciaMotor'];        
         $registro->descricao = $registros['descricao'];   
-        $registro->opcionais = $registros['opcionais']; 
+        
         $registro->publicar = $registros['publicar'];
         
         $registro->marca_id = $registros['marca_id'];
@@ -141,6 +165,22 @@ class CarroController extends Controller
             $file->move($diretorio, $nomeArquivo);
             $registro->imagem = $diretorio.'/'.$nomeArquivo;
         }
+                
+        
+        if(empty($_POST['opcionais']) == true) {
+            $opcionais = 0;
+                        
+        } else {
+            $opcionais = $_POST['opcionais'];
+            
+            foreach($opcionais as $value){     
+                $reg = new OpcionaisCarros();              
+                $reg->id_opcional = $value;
+                $reg->id_carro = $registro->id;
+                $reg->update();
+            }    
+            
+        }                
 
         $registro->update();
 
