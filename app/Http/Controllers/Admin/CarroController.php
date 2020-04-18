@@ -29,27 +29,26 @@ class CarroController extends Controller
         $modelos = Modelo::all();
         $opcionais = Opcional::all();
         $opcionais_carro  = null;
+        $opcionais_carro_id  = null;
+        $value = 0;        
 
-        return view('admin.carros.adicionar',compact('marcas','modelos', 'opcionais', 'opcionais_carro'));
+        return view('admin.carros.adicionar',compact('marcas','modelos', 'opcionais', 'opcionais_carro', 'opcionais_carro_id', 'value'));
     }
 
     public function editar($id){
         $registro = Carro::find($id);
-
-       /*  var_dump($id);
-        exit; */
+      
         $marcas = Marca::all();
         $modelos = Modelo::all();
         $opcionais = Opcional::all();               
         $opcionais_carro_id = DB::table('opcionais_carros')
-        ->select(DB::raw('id_carro'))
-        ->where('id', $id)                     
-        ->get();  
-        var_dump($opcionais_carro_id);
-        exit;
+        ->select(DB::raw('*'))
+        ->where('id_carro', $id)
+        ->get();
+     
         /* $opcionais_carro_id = DB::table('opcionais_carros')->where('id_carro', $id)->get(); */
 
-        return view('admin.carros.editar',compact('registro','marcas','modelos', 'opcionais', 'opcionais_carro_id'));
+    return view('admin.carros.editar',compact('registro','marcas','modelos', 'opcionais', 'opcionais_carro_id'));
     }
 
     public function salvar(Request $request){
@@ -104,25 +103,23 @@ class CarroController extends Controller
             $registro->save(); /* Metodo que salva no banco. */
             
         $opcionais_carros = $_POST['opcionais'];   
-     /*    foreach($opcionais_carros as $value) {
-                                                           
-        }
-        exit;         */
-        
 
-
-        foreach($opcionais_carros as $value){     
+        foreach($opcionais_carros as $value){                
+            
             $reg = new OpcionaisCarros();     
             $titles = DB::table('opcionals')
                 ->select(DB::raw('tituloOpcional'))
                 ->where('id', $value)                     
                 ->get();            
-                foreach($titles as $title){                                        
+                foreach($titles as $title){                                               
+                    $reg = new OpcionaisCarros();
                     $reg->tituloOpcional = $title->tituloOpcional;
                     $reg->id_opcional = $value;
-                    $reg->id_carro = $registro->id;
-                    $reg->save();                    
-                }                   
+                    $reg->id_carro = $registro->id;               
+                    
+                    $reg->save();
+                    
+                }                                   
         }  
 
             \Session::flash('mensagem',['msg'=>'Registro Criado com Sucesso!','class'=>'green white-text']);
