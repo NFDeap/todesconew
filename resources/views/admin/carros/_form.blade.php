@@ -1,40 +1,4 @@
-<?php  
 
-/* foreach($opcionais_carro as $key => $value) {
-    var_dump($value->id_opcional);    
-}
-exit; */
-/* 
-    var_dump($opcionais_carro['0']->id_opcional);
-    exit;
-if(isset($opcionais_carro) == true) {
-
-
-    var_dump($opcionais_carro->id_opcional);
-} else {
-    echo 'nada';
-} */
-
-/* var_dump($opcionais_carro_id);
-exit; */
-
-
-    /* var_dump($opcionais_carro_id[0]->tituloOpcional); */
-/*     foreach($opcionais_carro_id as $key => $value) {
-        var_dump($value->tituloOpcional);
-    }
-exit; */
-
-
-
-  /*   if($opcionais_carro_id == 'null'){
-        $value = 0;
-        $value->id_opcional = 0;
-        var_dump($value);
-        exit;
-    } */
-
-?>
 
 <div class="input-field">
     <input type="text" name="titulo" class="validade" maxlength="60" required value="{{ (isset($registro->titulo) ? $registro->titulo : '') }}">
@@ -133,55 +97,25 @@ exit; */
 
 
 <div class="row">    
-<!-- @if(isset($opcionais_carro_id)) -->
-<?php
 
-    /*foreach($opcionais_carro_id as $value) {
-        echo $value;  "
-                <div class='col-3'>
-                    <p>
-                        <label>
-                            <input name='opcionais[]' id='opcionais' " . $value . " type='checkbox' class='filled-in' value='" . $value . "' checked />
-                            <span>" . $value . "</span>
-                        </label>
-                    </p>
-                </div>
-        "; 
-    }*/
-
-?>
-    
-<!-- @endif -->
-    @if($opcionais_carro_id == 'null')
-
-    @elseif($opcionais_carro_id)
-    @foreach($opcionais_carro_id as $key => $value)    
-
-            <div class="col-3">
-                <p>
-                    <label>
-                        <input name="opcionais[]" id="opcionais{{$value->id_opcional}}" type="checkbox" class="filled-in" value="{{ $value->id_opcional }}" {{ (isset($opcionais_carro_id) ? 'checked' : '') }} />
-                        <span>{{ $value->tituloOpcional }}</span>
-                    </label>
-                </p>
-            </div>          
-
-            
-        @foreach($opcionais as $opcional)      
-
-            <div class="col-3">
-                <p>
-                    <label {{ (($value->id_opcional == $opcional->id) ? 'hidden' : '') }}>
-                        <input name="opcionais[]" id="opcionais{{$opcional->id}}" type="checkbox" class="filled-in" value="{{ $opcional->id }}"/>
-                        <span>{{ $opcional->tituloOpcional }}</span>
-                    </label>
-                </p>
-            </div>        
-
-        @endforeach     
-            
+    @foreach($opcionais as $opcional)
+        <?php                             
+            if(in_array($opcional->id, $op_array)) {
+                $checked = true;
+            } else {
+                $checked = false;
+            }                    
+        ?>
+        
+        <div class="col-3">
+            <p>
+                <label>
+                    <input name="opcionais[]" id="opcionais{{$opcional->id}}" type="checkbox" class="filled-in" value="{{ $opcional->id }}"  {{ (($checked) ? 'checked' : '') }} />
+                    <span>{{ $opcional->tituloOpcional }}</span>
+                </label>
+            </p>
+        </div>
     @endforeach
-    @endif    
  
 </div>
 

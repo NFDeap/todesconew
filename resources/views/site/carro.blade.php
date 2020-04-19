@@ -17,7 +17,8 @@
                         <div class="slider">
                             <ul class="slides materialboxed">
                             @foreach($galeria as $imagem)
-                                <li>                                
+                                <li>             
+                                                       
                                     <img class="responsive-img" src="{{ asset($imagem->imagem) }}" alt="{{ $imagem->titulo }}">  <!-- responsive-img -->
                                     <div class="caption right-align">
                                         <h5>{{ $imagem->titulo }}</h5>                                    
@@ -181,8 +182,25 @@
                         <div class="col m6">
                         <blockquote>
                             <h5>Opcionais</h5>
-                            <div class="divider"></div>
-                            <p class="desc-post">{{ $carro->opcionais }}</p>
+                            <div class="divider"></div>                            
+                                @foreach($opcionais as $opcional)
+                                    <?php
+                                        if(in_array($opcional->id, $op_array)) {
+                                            $checked = true;
+                                        } else {
+                                            $checked = false;
+                                        }                    
+                                    ?>
+                                    
+                                    <div class="col-3">
+                                        <p>
+                                            <label>
+                                                <input disabled name="opcionais[]" id="opcionais{{$opcional->id}}" type="checkbox" class="filled-in" value="{{ $opcional->id }}"  {{ (($checked) ? 'checked' : '') }} />
+                                                <span>{{ $opcional->tituloOpcional }}</span>
+                                            </label>
+                                        </p>
+                                    </div>
+                                @endforeach
                         </blockquote>
                         </div>
                     </div>

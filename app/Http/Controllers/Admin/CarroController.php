@@ -19,7 +19,8 @@ class CarroController extends Controller
 
         $registros = Carro::where('publicar','!=',null)->orderBy('id')->paginate(100000);    
         $paginacao = true;
-        $contatos = Contato::find(1);
+        $contatos = Contato::find(1);        
+
         return view('admin.carros.index',compact('registros','paginacao','contatos'));      
     
     }
@@ -28,11 +29,10 @@ class CarroController extends Controller
         $marcas = Marca::all();
         $modelos = Modelo::all();
         $opcionais = Opcional::all();
-        $opcionais_carro  = null;
-        $opcionais_carro_id  = null;
-        $value = 0;        
+        $op_array = array();
+        
 
-        return view('admin.carros.adicionar',compact('marcas','modelos', 'opcionais', 'opcionais_carro', 'opcionais_carro_id', 'value'));
+        return view('admin.carros.adicionar',compact('marcas','modelos', 'opcionais', 'op_array'));
     }
 
     public function editar($id){
@@ -40,15 +40,31 @@ class CarroController extends Controller
       
         $marcas = Marca::all();
         $modelos = Modelo::all();
-        $opcionais = Opcional::all();               
+        $opcionais = Opcional::all();    
+        
+       /*  $opcionais = DB::table('opcionals')
+        ->select(DB::raw('*'))
+        ->join('opcionais_carros', 'opcionals.id', '=', 'opcionais_carros.id_opcional')
+        ->where('opcionais_carros.id_opcional', '<>', 'opcionals.id')
+        ->where('opcionais_carros.id_carro', '=', $id)
+        ->get(); */
+        /* $opcionais = Opcional::addSelect(['id' => OpcionaisCarros::select('id_opcional')
+        ->whereColumn('id', 'opcionals.id')
+        ])->get();
+        var_dump($opcionais);
+        exit; */
         $opcionais_carro_id = DB::table('opcionais_carros')
         ->select(DB::raw('*'))
         ->where('id_carro', $id)
         ->get();
-     
-        /* $opcionais_carro_id = DB::table('opcionais_carros')->where('id_carro', $id)->get(); */
 
-    return view('admin.carros.editar',compact('registro','marcas','modelos', 'opcionais', 'opcionais_carro_id'));
+        $op_array = array();
+        
+        foreach($opcionais_carro_id as $key => $value) {
+            array_push($op_array, $value->id_opcional);            
+        }                             
+
+    return view('admin.carros.editar',compact('registro','marcas','modelos', 'opcionais', 'opcionais_carro_id', 'op_array'));
     }
 
     public function salvar(Request $request){
