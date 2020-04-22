@@ -45,7 +45,7 @@ class GaleriaController extends Controller
         }
 
         if($request->hasFile('imagens')){
-            $arquivos = $request->file('imagens');
+            $arquivos = $request->file('imagens');       
             foreach($arquivos as $imagem){
 
                 $registro = new Galeria();
@@ -58,10 +58,11 @@ class GaleriaController extends Controller
                 $registro->carro_id = $carro->id;
                 $registro->ordem = $ordemAtual + 1;
                 $ordemAtual++;
-                $registro->imagem = $diretorio.'/'.$nomeArquivo;
+                $registro->imagem = $diretorio.$nomeArquivo;
+             
                 $registro->save();
             }
-        }       
+        }
 
         \Session::flash('mensagem',['msg'=>'Registro Criado com Sucesso!','class'=>'green white-text']);
 

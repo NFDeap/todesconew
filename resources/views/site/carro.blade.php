@@ -1,4 +1,5 @@
-<!-- link ( http://localhost:8000/carro_post/titulo_do_carro ) -->
+
+
 @extends('layouts.site')
 
 @section('content')
@@ -210,3 +211,19 @@
     </div>        
 </div>
 @endsection
+
+
+<script>
+
+let url = window.location.href;
+
+let galeria = <?= $galeria; ?>;
+let i;
+/* let arr = array(); */
+
+    for(i = 0; i < galeria.length; i++) {        
+        console.log(url + galeria[i].imagem);
+    }
+
+
+</script>

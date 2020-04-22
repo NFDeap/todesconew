@@ -102,15 +102,6 @@ class CarroController extends Controller
             $registro->imagem = $diretorio.'/'.$nomeArquivo;
         }
 
-        /* $opcionais = Input::get('opcionais[]','value'); */      
-    
-        /* $registro->opcionais = $registros['opcionais'];
-        if($registro->opcionais != null || $registro->opcionais != '') {
-            foreach($registro->opcionais as $value){
-                
-            }            
-        } */
-
         if(!is_numeric($registro->preco) || empty($registro->preco) || !is_numeric($registro->ano) || empty($registro->ano)){
             \Session::flash('mensagem',['msg'=>'Campo Numérico contendo caracteres!','class'=>'red white-text']);
             return redirect()->route('admin.carros');    
@@ -118,25 +109,22 @@ class CarroController extends Controller
         else{         
             $registro->save(); /* Metodo que salva no banco. */
             
-        $opcionais_carros = $_POST['opcionais'];   
+            $opcionais_carros = $_POST['opcionais'];   
 
-        foreach($opcionais_carros as $value){                
-            
-            $reg = new OpcionaisCarros();     
-            $titles = DB::table('opcionals')
-                ->select(DB::raw('tituloOpcional'))
-                ->where('id', $value)                     
-                ->get();            
-                foreach($titles as $title){                                               
-                    $reg = new OpcionaisCarros();
-                    $reg->tituloOpcional = $title->tituloOpcional;
-                    $reg->id_opcional = $value;
-                    $reg->id_carro = $registro->id;               
-                    
-                    $reg->save();
-                    
-                }                                   
-        }  
+            foreach($opcionais_carros as $value){                                
+                $reg = new OpcionaisCarros();     
+                $titles = DB::table('opcionals')
+                    ->select(DB::raw('tituloOpcional'))
+                    ->where('id', $value)                     
+                    ->get();            
+                    foreach($titles as $title){                                               
+                        $reg = new OpcionaisCarros();
+                        $reg->tituloOpcional = $title->tituloOpcional;
+                        $reg->id_opcional = $value;
+                        $reg->id_carro = $registro->id;                                       
+                        $reg->save();                        
+                    }                                   
+            }  
 
             \Session::flash('mensagem',['msg'=>'Registro Criado com Sucesso!','class'=>'green white-text']);
             return redirect()->route('admin.carros');
